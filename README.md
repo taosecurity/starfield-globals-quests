@@ -1,6 +1,6 @@
 # Starfield Globals and Quests
 
-Every global variable and every quest in Starfield and its official add-ons, with their IDs, starting values, quest stages and copy-ready console commands. The list was read from the game files (game version 1.16.244.0).
+This page lists every global variable and every quest in Starfield and its official add-ons. It gives their IDs, starting values and quest stages, with console commands ready to copy. The list was read from the game files (game version 1.16.244.0).
 
 **View it here:** https://taosecurity.github.io/starfield-globals-quests/
 
@@ -9,7 +9,11 @@ Every global variable and every quest in Starfield and its official add-ons, wit
 - Every global and quest has console commands you can copy: `getglobalvalue`, `set ... to ...`, `getstage`, `setstage`, `sqs`, `startquest`, `completequest` and `resetquest`.
 - The top of the page explains in plain language what globals and quests are, how players and modders can use the list, and what to watch out for before changing anything.
 
-Made by Richard Bejtlich of [Richard Presents Starfield Essentials](https://www.youtube.com/@RichardBejtlich). More Starfield tools and references are on the [Richard Presents Development Hub](https://taosecurity.github.io/).
+Richard Bejtlich of [Richard Presents Starfield Essentials](https://www.youtube.com/@RichardBejtlich) made this page. More Starfield tools and references are on the [Richard Presents Development Hub](https://taosecurity.github.io/).
+
+## Thanks
+
+Thank you to Reddit user Aggravating-Bee4846 for asking about global and quest IDs, which led to this page.
 
 ## Notes
 

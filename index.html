@@ -236,12 +236,12 @@ tr.hit > td { background: var(--accent-soft); }
 </ul></nav>
 <main>
 <header id="top">
-  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-09 15:23 UTC</p>
+  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-09 15:39 UTC</p>
   <h1>Starfield Globals and Quests</h1>
   <p class="lede">This page lists every global variable and every quest in Starfield and its official add-ons, read straight from the game files. It gives their IDs, starting values and quest stages,
   with console commands ready to copy. Click any ID or command to copy it.</p>
   <p class="byline">By <a href="https://github.com/taosecurity" target="_blank" rel="noopener">Richard Bejtlich</a>, <a href="https://www.youtube.com/@RichardBejtlich" target="_blank" rel="noopener">Richard Presents Starfield Essentials</a> on YouTube</p>
-  <p class="byline">More Starfield tools and references: <a href="https://taosecurity.github.io/">Richard Presents Development Hub</a>.</p>
+  <p class="byline">More Starfield tools and references are on the <a href="https://taosecurity.github.io/">Richard Presents Development Hub</a>.</p>
 </header>
 <div class="bar" role="search">
   <input type="search" id="q" placeholder="Search names, IDs, quest titles, stage notes (press / to focus)" aria-label="Search globals and quests" autocomplete="off">
@@ -390,7 +390,7 @@ tr.hit > td { background: var(--accent-soft); }
       <li><a href="#q_faction">Faction quests</a><span class="bar-o"><span class="bar-i" style="width:8.25%"></span></span><span class="n">75</span></li>
       <li><a href="#q_main">Main quests</a><span class="bar-o"><span class="bar-i" style="width:4.07%"></span></span><span class="n">37</span></li>
       </ul>
-      <p>20,688 stages in all; 20,212 carry a developer note.</p>
+      <p>The quests have 20,688 stages in all, and 20,212 of them carry a developer note.</p>
     </div>
     <div class="kind">
       <h3>Where they come from</h3>
@@ -651,10 +651,11 @@ tr.hit > td { background: var(--accent-soft); }
     <li>Stage notes are the developers' own notes from the game files (<code>NAM2</code>), shown as written, typos included. Quest titles with brackets, like <code>[BE - Generic]</code>, are internal names players never see.</li>
     <li>The commands were not tried in the game one by one. Explanations in Most asked for come from each global's name, value and the quests that use it, and weren't tested in game either.</li>
     <li>A game update can add or change records; the list is regenerated after updates.</li>
+    <li>Thank you to Reddit user Aggravating-Bee4846 for asking about global and quest IDs, which led to this page.</li>
   </ul>
 </section>
 <footer>
-  <p>Made by <a href="https://github.com/taosecurity" target="_blank" rel="noopener">Richard Bejtlich</a> of Richard Presents Starfield Essentials: <a href="https://www.youtube.com/@RichardBejtlich" target="_blank" rel="noopener">youtube.com/@RichardBejtlich</a>.</p>
+  <p><a href="https://github.com/taosecurity" target="_blank" rel="noopener">Richard Bejtlich</a> of Richard Presents Starfield Essentials made this page: <a href="https://www.youtube.com/@RichardBejtlich" target="_blank" rel="noopener">youtube.com/@RichardBejtlich</a>.</p>
   <p>This is an unofficial list, not made or endorsed by Bethesda. Starfield is a trademark of ZeniMax Media. Names and notes are the game's own.</p>
 </footer>
 </main>
@@ -702,7 +703,7 @@ tr.hit > td { background: var(--accent-soft); }
   function globalRow(g, terms) {
     var f = byFile[g[1]], id = gameId(g[1], g[2]), ref = mode.value === 'id' ? id : g[0];
     var note = g[9] ? '<span class="note">' + esc(g[9]) + '</span>' : '';
-    var over = g[10] ? '<span class="note">Changed by an add-on: ' + esc(g[10]) + '</span>' : '';
+    var over = g[10] ? '<span class="note">An add-on changes it: ' + esc(g[10]) + '</span>' : '';
     var val = esc(g[3]) + (g[4] ? ' <span class="tag const" title="The game files mark this global constant: scripts can\'t change it, and set may not work or last">constant</span>' : '');
     var use;
     if (!g[7].length && !g[8]) use = '<span class="more" title="No quest condition or script property in the game files names it. The engine may read it directly.">none found</span>';
@@ -838,7 +839,7 @@ tr.hit > td { background: var(--accent-soft); }
       q.value = edid; show.value = 'all'; src.value = ''; openQ[edid] = true; render();
       var row = document.getElementById('q-' + edid);
       if (row) row.scrollIntoView({ block: 'center' });
-      say('Showing ' + edid + ' (clear the search to see everything)');
+      say('Now showing ' + edid + '. Clear the search to see everything.');
     }
   });
   // Your load order: one prefix box per add-on file
