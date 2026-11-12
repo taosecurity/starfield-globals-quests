@@ -89,6 +89,13 @@ a { color: var(--accent); }
 .bar input[type=search] { flex: 1 1 18rem; min-width: 0; font: 15px var(--body); color: var(--fg); background: var(--surface);
   border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; }
 .bar input[type=search]:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+/* search box + Clear button stay on one line, the button right of the box */
+.bar .qwrap { flex: 1 1 18rem; min-width: 0; display: flex; gap: 8px; align-items: stretch; }
+.bar .qwrap input[type=search] { flex: 1 1 auto; min-width: 0; }
+.bar button.qclear { flex: 0 0 auto; font: 600 14px var(--body); color: var(--fg); background: var(--surface);
+  border: 2px solid hsl(var(--h) 60% var(--tint-dot-l)); border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+.bar button.qclear:hover { background: var(--accent-soft); }
+.bar button.qclear:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
 .bar label { font-size: 14px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
 .count { font: 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .frame { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
@@ -236,7 +243,7 @@ tr.hit > td { background: var(--accent-soft); }
 </ul></nav>
 <main>
 <header id="top">
-  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-09 15:39 UTC</p>
+  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-09 22:19 UTC</p>
   <h1>Starfield Globals and Quests</h1>
   <p class="lede">This page lists every global variable and every quest in Starfield and its official add-ons, read straight from the game files. It gives their IDs, starting values and quest stages,
   with console commands ready to copy. Click any ID or command to copy it.</p>
@@ -244,7 +251,7 @@ tr.hit > td { background: var(--accent-soft); }
   <p class="byline">More Starfield tools and references are on the <a href="https://taosecurity.github.io/">Richard Presents Development Hub</a>.</p>
 </header>
 <div class="bar" role="search">
-  <input type="search" id="q" placeholder="Search names, IDs, quest titles, stage notes (press / to focus)" aria-label="Search globals and quests" autocomplete="off">
+  <span class="qwrap"><input type="search" id="q" placeholder="Search names, IDs, quest titles, stage notes (press / to focus)" aria-label="Search globals and quests" autocomplete="off"><button type="button" class="qclear" aria-label="Clear the search box" onclick="var q=document.getElementById('q');q.value='';q.dispatchEvent(new Event('input'));q.focus()">Clear</button></span>
   <label>Show <select id="show"><option value="all">Everything</option><option value="globals">Globals</option><option value="quests">Quests</option></select></label>
   <label>From <select id="src"><option value="">Everything</option><option value="base">Main game</option><option value="ss">Shattered Space</option><option value="ta">Terran Armada</option><option value="freelanes">Free Lanes</option><option value="wt">Watchtower</option><option value="tra">Trackers Alliance</option><option value="cc">Other Creations</option></select></label>
   <label>Commands use <select id="mode"><option value="ed">Editor ID</option><option value="id">Form ID</option></select></label>
