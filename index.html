@@ -244,7 +244,7 @@ tr.hit > td { background: var(--accent-soft); }
 </ul></nav>
 <main>
 <header id="top">
-  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-21 22:05 UTC</p>
+  <p class="eyebrow">Starfield 1.16.244.0 &middot; base game + add-ons &middot; 3,711 globals &middot; 2,727 quests &middot; 20,688 stages &middot; built 2026-11-21 22:15 UTC</p>
   <h1>Starfield Globals and Quests</h1>
   <p class="lede">This page lists every global variable and every quest in Starfield and its official add-ons, read straight from the game files. It gives their IDs, starting values and quest stages,
   with console commands ready to copy. Click any ID or command to copy it.</p>
@@ -254,6 +254,7 @@ tr.hit > td { background: var(--accent-soft); }
 <section id="news" class="about">
   <h2>What's new</h2>
   <ul>
+    <li><strong>2026-11-21.</strong> The three globals with no editor ID now get console commands with their Form ID, and a changed load-order prefix no longer saves the other prefixes with it.</li>
     <li><strong>2026-11-09.</strong> A Clear button next to the search box empties it in one click.</li>
     <li><strong>2026-11-09.</strong> This page went live, listing the game's global variables and quests, grouped and searchable.</li>
   </ul>
@@ -698,6 +699,10 @@ tr.hit > td { background: var(--accent-soft); }
     while (s.length < digits) s = '0' + s;
     return p + s;
   }
+  // a record with no editor ID carries this placeholder (tools/classify.py); commands then use the Form ID
+  var NOED = '(no editor ID)';
+  function hasEd(e) { return !!e && e !== NOED; }
+  function edCell(e, terms) { return hasEd(e) ? cp(e, 'Copy the editor ID', terms) : '<span class="more">' + hl(e || NOED, terms) + '</span>'; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function hl(text, terms) {
     text = String(text);
@@ -733,7 +738,7 @@ tr.hit > td { background: var(--accent-soft); }
 
   // global: [edid, file, local, value, const, group, popular, quests, other, note, over]
   function globalRow(g, terms) {
-    var f = byFile[g[1]], id = gameId(g[1], g[2]), ref = mode.value === 'id' ? id : g[0];
+    var f = byFile[g[1]], id = gameId(g[1], g[2]), ref = mode.value === 'id' || !hasEd(g[0]) ? id : g[0];
     var note = g[9] ? '<span class="note">' + esc(g[9]) + '</span>' : '';
     var over = g[10] ? '<span class="note">An add-on changes it: ' + esc(g[10]) + '</span>' : '';
     var val = esc(g[3]) + (g[4] ? ' <span class="tag const" title="The game files mark this global constant: scripts can\'t change it, and set may not work or last">constant</span>' : '');
@@ -746,7 +751,7 @@ tr.hit > td { background: var(--accent-soft); }
       if (g[8]) shown.push('<span class="more">+' + g[8].toLocaleString() + ' other record' + (g[8] === 1 ? '' : 's') + '</span>');
       use = shown.join('<br>');
     }
-    return '<tr><td class="ed">' + cp(g[0], 'Copy the editor ID', terms) + note + over + '</td>' +
+    return '<tr><td class="ed">' + edCell(g[0], terms) + note + over + '</td>' +
       '<td class="id">' + cp(id, 'Copy the ID', terms) + loTag(f) + '</td>' +
       '<td class="val">' + val + '</td>' +
       '<td class="cmd">' + cp('getglobalvalue ' + ref, 'Copy: show its current value') + cp('set ' + ref + ' to ' + g[3], 'Copy: change it (edit the number)') + '</td>' +
@@ -754,7 +759,7 @@ tr.hit > td { background: var(--accent-soft); }
   }
   // quest: [title, edid, file, local, kind, faction, group, popular, stages[[n, flags, end, note]]]
   function stagePanel(x, terms, hay) {
-    var id = gameId(x[2], x[3]), ref = mode.value === 'id' ? id : x[1];
+    var id = gameId(x[2], x[3]), ref = mode.value === 'id' || !hasEd(x[1]) ? id : x[1];
     var cmds = ['getstage ', 'sqs ', 'startquest ', 'completequest ', 'resetquest ', 'sqo '].map(function (c) { return cp(c + ref, 'Copy the command'); }).join('');
     var rows = x[8].map(function (s) {
       var tags = '';
@@ -776,7 +781,7 @@ tr.hit > td { background: var(--accent-soft); }
     var kind = esc(x[4]) + (x[5] ? '<span class="note">' + esc(x[5]) + '</span>' : '');
     var st = x[8].length ? '<button class="st" data-k="' + esc(x[1]) + '" aria-expanded="' + open + '">' + x[8].length + ' stage' + (x[8].length === 1 ? '' : 's') + (open ? ' &#9662;' : ' &#9656;') + '</button>'
       : '<button class="st" data-k="' + esc(x[1]) + '" aria-expanded="' + open + '">commands' + (open ? ' &#9662;' : ' &#9656;') + '</button>';
-    return '<tr id="q-' + esc(x[1]) + '"><td>' + name + '</td><td class="ed">' + cp(x[1], 'Copy the editor ID', terms) + '</td>' +
+    return '<tr id="q-' + esc(x[1]) + '"><td>' + name + '</td><td class="ed">' + edCell(x[1], terms) + '</td>' +
       '<td class="id">' + cp(id, 'Copy the ID', terms) + loTag(f) + '</td><td>' + kind + '</td><td>' + esc(f.label) + '</td><td>' + st + '</td></tr>' +
       (open ? stagePanel(x, terms, hay) : '');
   }
@@ -921,7 +926,10 @@ tr.hit > td { background: var(--accent-soft); }
     var f = byFile[i.dataset.f], v = i.value.trim().toUpperCase();
     if (!valid(f, v)) { i.classList.add('bad'); return; }
     i.classList.remove('bad'); prefix[f.file] = v;
-    try { localStorage.setItem(KEY, JSON.stringify(prefix)); } catch (err) {}
+    // store only the prefixes the reader changed, so a later build's new defaults still reach them
+    var out = {}, any = false;
+    files.forEach(function (ff) { if (prefix[ff.file] !== ff.def) { out[ff.file] = prefix[ff.file]; any = true; } });
+    try { if (any) localStorage.setItem(KEY, JSON.stringify(out)); else localStorage.removeItem(KEY); } catch (err) {}
     drawLo(); render();
   });
   document.getElementById('lo-reset').addEventListener('click', function () {
